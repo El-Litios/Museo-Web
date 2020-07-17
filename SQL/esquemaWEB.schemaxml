@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8mb4" collation="utf8mb4_general_ci">db_ejemplo</database>
+</source>
+<canvas zoom="120">
+<tables>
+<table name="rol" view="colnames">
+<left>13</left>
+<top>90</top>
+<width>112</width>
+<height>134</height>
+<sql_create_table>CREATE TABLE `rol` (
+  `rol_cod` int(2) NOT NULL AUTO_INCREMENT,
+  `rol_nom` varchar(50) NOT NULL,
+  PRIMARY KEY (`rol_cod`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="usuarios" view="colnames">
+<left>175</left>
+<top>171</top>
+<width>125</width>
+<height>216</height>
+<sql_create_table>CREATE TABLE `usuarios` (
+  `cod_usu` int(4) NOT NULL AUTO_INCREMENT,
+  `nom_usu` varchar(30) NOT NULL,
+  `pass_usu` varchar(160) NOT NULL,
+  `p_nombre` varchar(45) NOT NULL,
+  `em_usu` varchar(128) NOT NULL,
+  `codRol` int(2) NOT NULL,
+  PRIMARY KEY (`cod_usu`),
+  KEY `codRol` (`codRol`),
+  CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`codRol`) REFERENCES `rol` (`rol_cod`)
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="ubicacion" view="colnames">
+<left>1620</left>
+<top>167</top>
+<width>157</width>
+<height>134</height>
+<sql_create_table>CREATE TABLE `ubicacion` (
+  `cod_ubicacion` int(2) NOT NULL AUTO_INCREMENT,
+  `nom_ubicacion` varchar(40) NOT NULL,
+  PRIMARY KEY (`cod_ubicacion`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="galerias" view="colnames">
+<left>1458</left>
+<top>226</top>
+<width>114</width>
+<height>155</height>
+<sql_create_table>CREATE TABLE `galerias` (
+  `cod_gal` int(9) NOT NULL AUTO_INCREMENT,
+  `nom_gal` varchar(25) NOT NULL,
+  `cod_ubi` int(3) NOT NULL,
+  PRIMARY KEY (`cod_gal`),
+  KEY `cod_ubi` (`cod_ubi`),
+  CONSTRAINT `galerias_ibfk_1` FOREIGN KEY (`cod_ubi`) REFERENCES `ubicacion` (`cod_ubicacion`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="administrador" view="colnames">
+<left>416</left>
+<top>84</top>
+<width>137</width>
+<height>175</height>
+<sql_create_table>CREATE TABLE `administrador` (
+  `cod_admin` int(3) NOT NULL AUTO_INCREMENT,
+  `em_admin` varchar(30) NOT NULL,
+  `pass_admin` varchar(35) NOT NULL,
+  `cod_usu` int(1) NOT NULL,
+  PRIMARY KEY (`cod_admin`),
+  KEY `cod_usu` (`cod_usu`),
+  CONSTRAINT `administrador_ibfk_1` FOREIGN KEY (`cod_usu`) REFERENCES `usuarios` (`cod_usu`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="pais" view="colnames">
+<left>239</left>
+<top>980</top>
+<width>121</width>
+<height>134</height>
+<sql_create_table>CREATE TABLE `pais` (
+  `cod_pais` int(3) NOT NULL AUTO_INCREMENT,
+  `nom_pais` varchar(64) NOT NULL,
+  PRIMARY KEY (`cod_pais`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="obradearte" view="colnames">
+<left>1170</left>
+<top>646</top>
+<width>130</width>
+<height>216</height>
+<sql_create_table>CREATE TABLE `obradearte` (
+  `cod_obra` int(4) NOT NULL AUTO_INCREMENT,
+  `tit_obra` varchar(128) NOT NULL,
+  `fcrea_obra` varchar(12) NOT NULL,
+  `fing_obra` varchar(12) NOT NULL,
+  `cod_autor` int(8) NOT NULL,
+  `cod_tipo` int(2) NOT NULL,
+  `cod_estadoO` int(1) NOT NULL,
+  PRIMARY KEY (`cod_obra`),
+  KEY `cod_autor` (`cod_autor`),
+  KEY `cod_tipo` (`cod_tipo`),
+  KEY `cod_estado` (`cod_estadoO`),
+  CONSTRAINT `obradearte_ibfk_1` FOREIGN KEY (`cod_autor`) REFERENCES `autores` (`cod_autor`),
+  CONSTRAINT `obradearte_ibfk_2` FOREIGN KEY (`cod_tipo`) REFERENCES `tipodeobra` (`cod_tipo`),
+  CONSTRAINT `obradearte_ibfk_3` FOREIGN KEY (`cod_estadoO`) REFERENCES `estado_obra` (`cod_estado`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="autores" view="colnames">
+<left>786</left>
+<top>899</top>
+<width>132</width>
+<height>216</height>
+<sql_create_table>CREATE TABLE `autores` (
+  `cod_autor` int(4) NOT NULL AUTO_INCREMENT,
+  `nom_autor` varchar(128) NOT NULL,
+  `pseu_autor` varchar(64) DEFAULT NULL,
+  `fec_naci` varchar(10) DEFAULT NULL,
+  `fec_def` varchar(10) DEFAULT NULL,
+  `cod_nac` int(4) NOT NULL,
+  PRIMARY KEY (`cod_autor`),
+  KEY `cod_nac` (`cod_nac`),
+  CONSTRAINT `autores_ibfk_1` FOREIGN KEY (`cod_nac`) REFERENCES `nacionalidades` (`cod_nac`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="nacionalidades" view="colnames">
+<left>589</left>
+<top>1097</top>
+<width>119</width>
+<height>155</height>
+<sql_create_table>CREATE TABLE `nacionalidades` (
+  `cod_nac` int(3) NOT NULL AUTO_INCREMENT,
+  `desc_nac` varchar(64) NOT NULL,
+  `cod_pais` int(3) NOT NULL,
+  PRIMARY KEY (`cod_nac`),
+  KEY `cod_pais` (`cod_pais`),
+  CONSTRAINT `nacionalidades_ibfk_1` FOREIGN KEY (`cod_pais`) REFERENCES `pais` (`cod_pais`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="TipoDeObra" view="colnames">
+<left>1456</left>
+<top>778</top>
+<width>119</width>
+<height>134</height>
+<sql_create_table>CREATE TABLE `tipodeobra` (
+  `cod_tipo` int(2) NOT NULL AUTO_INCREMENT,
+  `nom_tipo` varchar(64) NOT NULL,
+  PRIMARY KEY (`cod_tipo`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="evento" view="colnames">
+<left>1057</left>
+<top>122</top>
+<width>110</width>
+<height>216</height>
+<sql_create_table>CREATE TABLE `evento` (
+  `cod_ev` int(3) NOT NULL AUTO_INCREMENT,
+  `nom_ev` varchar(30) NOT NULL,
+  `fec_ini` varchar(10) NOT NULL,
+  `fec_fin` varchar(10) NOT NULL,
+  `cod_gal` int(3) NOT NULL,
+  `cod_tev` int(2) NOT NULL,
+  PRIMARY KEY (`cod_ev`),
+  KEY `cod_texpo` (`cod_tev`),
+  KEY `cod_gal` (`cod_gal`),
+  CONSTRAINT `evento_ibfk_2` FOREIGN KEY (`cod_tev`) REFERENCES `tipoevento` (`cod_tev`),
+  CONSTRAINT `evento_ibfk_3` FOREIGN KEY (`cod_gal`) REFERENCES `galerias` (`cod_gal`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="tipoevento" view="colnames">
+<left>1244</left>
+<top>322</top>
+<width>115</width>
+<height>134</height>
+<sql_create_table>CREATE TABLE `tipoevento` (
+  `cod_tev` int(3) NOT NULL AUTO_INCREMENT,
+  `nom_tev` varchar(50) NOT NULL,
+  PRIMARY KEY (`cod_tev`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="galeria_obra" view="colnames">
+<left>1320</left>
+<top>448</top>
+<width>125</width>
+<height>155</height>
+<sql_create_table>CREATE TABLE `galeria_obra` (
+  `cod_galob` int(6) NOT NULL AUTO_INCREMENT,
+  `cod_gal` int(6) NOT NULL,
+  `cod_ob` int(6) NOT NULL,
+  PRIMARY KEY (`cod_galob`),
+  KEY `cod_gal` (`cod_gal`),
+  KEY `cod_ob` (`cod_ob`),
+  CONSTRAINT `galeria_obra_ibfk_1` FOREIGN KEY (`cod_gal`) REFERENCES `galerias` (`cod_gal`),
+  CONSTRAINT `galeria_obra_ibfk_2` FOREIGN KEY (`cod_ob`) REFERENCES `obradearte` (`cod_obra`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="Museos" view="colnames">
+<left>2012</left>
+<top>514</top>
+<width>154</width>
+<height>196</height>
+<sql_create_table>CREATE TABLE `museos` (
+  `cod_museo` int(5) NOT NULL AUTO_INCREMENT,
+  `nom_museo` varchar(256) NOT NULL,
+  `dir_museo` varchar(256) NOT NULL,
+  `contac_museo` varchar(256) NOT NULL,
+  `cod_paism` int(3) NOT NULL,
+  PRIMARY KEY (`cod_museo`),
+  KEY `cod_paism` (`cod_paism`),
+  CONSTRAINT `museos_ibfk_1` FOREIGN KEY (`cod_paism`) REFERENCES `paism` (`cod_paism`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="paism" view="colnames">
+<left>2285</left>
+<top>594</top>
+<width>134</width>
+<height>134</height>
+<sql_create_table>CREATE TABLE `paism` (
+  `cod_paism` int(3) NOT NULL AUTO_INCREMENT,
+  `nom_paism` varchar(128) NOT NULL,
+  PRIMARY KEY (`cod_paism`)
+) ENGINE=InnoDB AUTO_INCREMENT=247 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="prestamos" view="colnames">
+<left>1822</left>
+<top>278</top>
+<width>174</width>
+<height>216</height>
+<sql_create_table>CREATE TABLE `prestamos` (
+  `cod_prestamo` int(5) NOT NULL AUTO_INCREMENT,
+  `fec_prestamo` date NOT NULL,
+  `comen_prestamo` varchar(4096) NOT NULL,
+  `costo_asociado` int(11) NOT NULL,
+  `cod_museo` int(5) NOT NULL,
+  `cod_estadop` int(2) NOT NULL,
+  PRIMARY KEY (`cod_prestamo`),
+  KEY `cod_museo` (`cod_museo`),
+  KEY `cod_estadop` (`cod_estadop`),
+  CONSTRAINT `prestamos_ibfk_1` FOREIGN KEY (`cod_museo`) REFERENCES `museos` (`cod_museo`),
+  CONSTRAINT `prestamos_ibfk_2` FOREIGN KEY (`cod_estadop`) REFERENCES `estadoprestamo` (`cod_estadop`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="detalle_prestamo" view="colnames">
+<left>1489</left>
+<top>527</top>
+<width>156</width>
+<height>175</height>
+<sql_create_table>CREATE TABLE `detalle_prestamo` (
+  `cod_detallep` int(9) NOT NULL AUTO_INCREMENT,
+  `obser_detallep` varchar(512) NOT NULL,
+  `cod_prestamo` int(5) NOT NULL,
+  `cod_obra` int(5) NOT NULL,
+  PRIMARY KEY (`cod_detallep`),
+  KEY `cod_prestamo` (`cod_prestamo`),
+  KEY `cod_obra` (`cod_obra`),
+  CONSTRAINT `detalle_prestamo_ibfk_1` FOREIGN KEY (`cod_prestamo`) REFERENCES `prestamos` (`cod_prestamo`),
+  CONSTRAINT `detalle_prestamo_ibfk_2` FOREIGN KEY (`cod_obra`) REFERENCES `obradearte` (`cod_obra`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="Seguros" view="colnames">
+<left>2324</left>
+<top>31</top>
+<width>154</width>
+<height>175</height>
+<sql_create_table>CREATE TABLE `seguros` (
+  `cod_seguro` int(8) NOT NULL AUTO_INCREMENT,
+  `desc_seguro` varchar(1024) NOT NULL,
+  `fec_seguro` date NOT NULL,
+  `monto_seguro` int(11) NOT NULL,
+  PRIMARY KEY (`cod_seguro`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="PrestamoSeguro" view="colnames">
+<left>2030</left>
+<top>10</top>
+<width>152</width>
+<height>155</height>
+<sql_create_table>CREATE TABLE `prestamoseguro` (
+  `cod_preseg` int(8) NOT NULL AUTO_INCREMENT,
+  `cod_prestamo` int(8) NOT NULL,
+  `cod_seguro` int(8) NOT NULL,
+  PRIMARY KEY (`cod_preseg`),
+  KEY `cod_prestamo` (`cod_prestamo`),
+  KEY `cod_seguro` (`cod_seguro`),
+  CONSTRAINT `prestamoseguro_ibfk_1` FOREIGN KEY (`cod_prestamo`) REFERENCES `prestamos` (`cod_prestamo`),
+  CONSTRAINT `prestamoseguro_ibfk_2` FOREIGN KEY (`cod_seguro`) REFERENCES `seguros` (`cod_seguro`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="estadoprestamo" view="colnames">
+<left>1618</left>
+<top>752</top>
+<width>148</width>
+<height>134</height>
+<sql_create_table>CREATE TABLE `estadoprestamo` (
+  `cod_estadop` int(2) NOT NULL AUTO_INCREMENT,
+  `nom_estadop` varchar(64) NOT NULL,
+  PRIMARY KEY (`cod_estadop`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="devoluciones" view="colnames">
+<left>2219</left>
+<top>260</top>
+<width>182</width>
+<height>196</height>
+<sql_create_table>CREATE TABLE `devoluciones` (
+  `cod_devolucion` int(8) NOT NULL AUTO_INCREMENT,
+  `fec_devolucion` date NOT NULL,
+  `docs_devolucion` varchar(1024) NOT NULL,
+  `comen_devolucion` varchar(1024) NOT NULL,
+  `cod_prestamo` int(8) NOT NULL,
+  PRIMARY KEY (`cod_devolucion`),
+  KEY `cod_prestamo` (`cod_prestamo`),
+  CONSTRAINT `devoluciones_ibfk_1` FOREIGN KEY (`cod_prestamo`) REFERENCES `prestamos` (`cod_prestamo`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="Segurosdevo" view="colnames">
+<left>2782</left>
+<top>192</top>
+<width>179</width>
+<height>175</height>
+<sql_create_table>CREATE TABLE `segurosdevo` (
+  `cod_segurodev` int(8) NOT NULL AUTO_INCREMENT,
+  `desc_segurodev` varchar(1024) NOT NULL,
+  `fec_segurodev` date NOT NULL,
+  `monto_segurodev` int(11) NOT NULL,
+  PRIMARY KEY (`cod_segurodev`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="DevolucionSeguro" view="colnames">
+<left>2525</left>
+<top>306</top>
+<width>161</width>
+<height>155</height>
+<sql_create_table>CREATE TABLE `devolucionseguro` (
+  `cod_devoseg` int(8) NOT NULL AUTO_INCREMENT,
+  `cod_devolucion` int(8) NOT NULL,
+  `cod_segurodev` int(8) DEFAULT NULL,
+  PRIMARY KEY (`cod_devoseg`),
+  KEY `cod_segurodev` (`cod_segurodev`),
+  KEY `cod_devolucion` (`cod_devolucion`),
+  CONSTRAINT `devolucionseguro_ibfk_1` FOREIGN KEY (`cod_segurodev`) REFERENCES `segurosdevo` (`cod_segurodev`),
+  CONSTRAINT `devolucionseguro_ibfk_2` FOREIGN KEY (`cod_devolucion`) REFERENCES `devoluciones` (`cod_devolucion`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="Especialidades" view="colnames">
+<left>22</left>
+<top>432</top>
+<width>178</width>
+<height>134</height>
+<sql_create_table>CREATE TABLE `especialidades` (
+  `cod_especialidad` int(3) NOT NULL AUTO_INCREMENT,
+  `nom_especialidad` varchar(100) NOT NULL,
+  PRIMARY KEY (`cod_especialidad`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="EspecialidadUsuario" view="colnames">
+<left>379</left>
+<top>533</top>
+<width>172</width>
+<height>155</height>
+<sql_create_table>CREATE TABLE `especialidadusuario` (
+  `cod_eu` int(5) NOT NULL AUTO_INCREMENT,
+  `cod_usu` int(5) NOT NULL,
+  `cod_especialidad` int(3) NOT NULL,
+  PRIMARY KEY (`cod_eu`),
+  KEY `cod_usu` (`cod_usu`),
+  KEY `cod_especialidad` (`cod_especialidad`),
+  CONSTRAINT `especialidadusuario_ibfk_1` FOREIGN KEY (`cod_usu`) REFERENCES `usuarios` (`cod_usu`),
+  CONSTRAINT `especialidadusuario_ibfk_2` FOREIGN KEY (`cod_especialidad`) REFERENCES `especialidades` (`cod_especialidad`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="RestauracionObra" view="colnames">
+<left>763</left>
+<top>646</top>
+<width>173</width>
+<height>216</height>
+<sql_create_table>CREATE TABLE `restauracionobra` (
+  `cod_restauracion` int(5) NOT NULL AUTO_INCREMENT,
+  `fecha_progra` date NOT NULL,
+  `fecha_estimada` date NOT NULL,
+  `cod_obra` int(5) NOT NULL,
+  `cod_eu` int(2) NOT NULL,
+  `cod_estado` int(1) NOT NULL,
+  PRIMARY KEY (`cod_restauracion`),
+  KEY `cod_obra` (`cod_obra`),
+  KEY `cod_eu` (`cod_eu`),
+  KEY `cod_estado` (`cod_estado`),
+  CONSTRAINT `restauracionobra_ibfk_2` FOREIGN KEY (`cod_obra`) REFERENCES `obradearte` (`cod_obra`),
+  CONSTRAINT `restauracionobra_ibfk_3` FOREIGN KEY (`cod_estado`) REFERENCES `estadorestauracion` (`cod_estado`),
+  CONSTRAINT `restauracionobra_ibfk_4` FOREIGN KEY (`cod_eu`) REFERENCES `especialidadusuario` (`cod_eu`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="EstadoRestauracion" view="colnames">
+<left>372</left>
+<top>771</top>
+<width>139</width>
+<height>134</height>
+<sql_create_table>CREATE TABLE `estadorestauracion` (
+  `cod_estado` int(1) NOT NULL AUTO_INCREMENT,
+  `nom_estado` varchar(128) NOT NULL,
+  PRIMARY KEY (`cod_estado`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="estado_obra" view="colnames">
+<left>981</left>
+<top>952</top>
+<width>139</width>
+<height>134</height>
+<sql_create_table>CREATE TABLE `estado_obra` (
+  `cod_estado` int(1) NOT NULL AUTO_INCREMENT,
+  `nom_estado` varchar(45) NOT NULL,
+  PRIMARY KEY (`cod_estado`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="TourEvento" view="colnames">
+<left>842</left>
+<top>298</top>
+<width>172</width>
+<height>236</height>
+<sql_create_table>CREATE TABLE `tourevento` (
+  `cod_tour` int(5) NOT NULL AUTO_INCREMENT,
+  `fecha_tour` date NOT NULL,
+  `hora_tour` time NOT NULL,
+  `insumos_tour` varchar(250) NOT NULL,
+  `cod_visita` int(3) NOT NULL,
+  `cod_especialidad` int(1) NOT NULL,
+  `cod_evento` int(3) NOT NULL,
+  PRIMARY KEY (`cod_tour`),
+  KEY `cod_visita` (`cod_visita`),
+  KEY `cod_evento` (`cod_evento`),
+  KEY `cod_especialidad` (`cod_especialidad`),
+  CONSTRAINT `tourevento_ibfk_3` FOREIGN KEY (`cod_visita`) REFERENCES `visitante` (`cod_visita`),
+  CONSTRAINT `tourevento_ibfk_4` FOREIGN KEY (`cod_evento`) REFERENCES `evento` (`cod_ev`),
+  CONSTRAINT `tourevento_ibfk_5` FOREIGN KEY (`cod_especialidad`) REFERENCES `especialidadusuario` (`cod_eu`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+<table name="visitante" view="colnames">
+<left>637</left>
+<top>78</top>
+<width>166</width>
+<height>196</height>
+<sql_create_table>CREATE TABLE `visitante` (
+  `cod_visita` int(3) NOT NULL AUTO_INCREMENT,
+  `nom_visita` varchar(125) DEFAULT NULL,
+  `nom_encargado` varchar(125) DEFAULT NULL,
+  `curso_visita` varchar(150) DEFAULT NULL,
+  `cantidad_visita` int(4) NOT NULL,
+  PRIMARY KEY (`cod_visita`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>
